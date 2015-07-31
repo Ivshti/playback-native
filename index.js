@@ -5,24 +5,29 @@ $.import('GLKit');
 
 var glContext = null;
 
+function compileShader(type, source)
+{
+  var shader = $.glCreateShader(type);
+  var lenbuf = new Buffer(32); lenbuf.writeInt32LE(source.length, 0) // how?
+  $.glShaderSource(shader, 1, source, lenbuf);
+  $.glCompileShader(shader);
+  return shader;
+}
+
 function initialize () 
 {
   glContext = opengl('openGLContext');
   glContext('makeCurrentContext');
 
-  var vertexShaderSource = [
+  var vertexShader = compileShader($.GL_VERTEX_SHADER, new Buffer([
       "attribute highp vec4 aVertexPosition;",
       "attribute vec2 aTextureCoord;",
       "varying highp vec2 vTextureCoord;",
       "void main(void) {",
       " gl_Position = aVertexPosition;",
-      " vTextureCoord = aTextureCoord;", "}"].join("\n");
+      " vTextureCoord = aTextureCoord;", "}"].join("\n")));
 
-  var vertexShader = $.glCreateShader($.GL_VERTEX_SHADER);
-  $.glShaderSource(vertexShader, vertexShaderSource);
-  $.glCompileShader(vertexShader);
-
-  var fragmentShaderSource = [
+  var fragmentShader = compileShader($.GL_FRAGMENT_SHADER, new Buffer([
       "precision highp float;",
       "varying lowp vec2 vTextureCoord;",
       "uniform sampler2D YTexture;",
@@ -35,11 +40,8 @@ function initialize ()
       " 1.1643828125, 2.017234375, 0, -1.081390625,",
       " 0, 0, 0, 1",
       ");", "void main(void) {",
-      " gl_FragColor = vec4( texture2D(YTexture, vTextureCoord).x, texture2D(UTexture, vTextureCoord).x, texture2D(VTexture, vTextureCoord).x, 1) * YUV2RGB;", "}"].join("\n");
-
-  var fragmentShader = $.glCreateShader($.GL_FRAGMENT_SHADER);
-  $.glShaderSource(fragmentShader, fragmentShaderSource);
-  $.glCompileShader(fragmentShader);
+      " gl_FragColor = vec4( texture2D(YTexture, vTextureCoord).x, texture2D(UTexture, vTextureCoord).x, texture2D(VTexture, vTextureCoord).x, 1) * YUV2RGB;", "}"
+      ].join("\n")));
 
   var program = $.glCreateProgram();
   $.glAttachShader(program, vertexShader); 
