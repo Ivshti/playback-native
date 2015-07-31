@@ -1,4 +1,5 @@
-require('Common');
+try { require('Common') } catch(e) { }
+if (process.bridge && process.bridge.objc) { // so we can also test this in node.js
 var $ = process.bridge.objc;
 $.import('GLKit');
 
@@ -23,6 +24,7 @@ function initialize ()
 }
 function display() 
 {
+
   glContext('makeCurrentContext');
   $.glClear($.GL_COLOR_BUFFER_BIT | $.GL_DEPTH_BUFFER_BIT);
   $.glLoadIdentity();
@@ -46,31 +48,28 @@ win.visible = true;
 
 initialize();
 
-var WebChimera = require("webchimera.js");
-var player = WebChimera.createPlayer([  ]);
-player.onFrameSetup = function(width, height, pixelFormat) { console.log("frame setup",width,height) };
-player.onFrameReady = function(frame) { display() };
-player.play("file:///Users/ivogeorgiev/Downloads/1.mkv");
-global.player = player;
 function Texture(gl, width, height, type) {
-    this.type = typeof(type)=="undefined" ? gl.LUMINANCE : type;
+    this.type = typeof(type)=="undefined" ? $.GL_LUMINANCE : type;
     this.gl = gl;
     this.width = width; this.height = height;
 
-    /*
+    this.texture = new Buffer(64);
+    $.glGenTextures(1, this.texture);
+    $.glBindTexture($.GL_TEXTURE_2D, this.texture);
+    $.gltexImage2D($.GL_TEXTURE_2D, 0, this.type, width, height, 0, this.type, $.GL_UNSIGNED_BYTE, null);
 
-    var texture = new Buffer(64);
-    $.glGenTextures(1, texture);
-
-    $.glBindTexture()
-    this.texture = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, this.texture);
-    gl.texImage2D(gl.TEXTURE_2D, 0, this.type, width, height, 0, this.type, gl.UNSIGNED_BYTE, null);
-
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR); // gl.NEAREST on slow cases
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); // gl.NEAREST on slow cases
+    $.glTexParameteri($.GL_TEXTURE_2D, $.GL_TEXTURE_MAG_FILTER, $.GL_LINEAR); 
+    $.glTexParameteri($.GL_TEXTURE_2D, $.GL_TEXTURE_MIN_FILTER, $.GL_LINEAR);
     
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    */
+    $.glTexParameteri($.GL_TEXTURE_2D, $.GL_TEXTURE_WRAP_S, $.GL_CLAMP_TO_EDGE);
+    $.glTexParameteri($.GL_TEXTURE_2D, $.GL_TEXTURE_WRAP_T, $.GL_CLAMP_TO_EDGE);
 }
+}
+
+var WebChimera = require("webchimera.js");
+var player = WebChimera.createPlayer([ "-vvv" ]);
+player.onFrameSetup = function(width, height, pixelFormat) { console.log("frame setup",width,height) };
+player.onFrameReady = function(frame) { typeof("display")=="function" && display() };
+player.play("file:///Users/ivogeorgiev/Downloads/1.mkv");
+global.player = player;
+

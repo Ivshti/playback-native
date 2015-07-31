@@ -1,0 +1,26 @@
+{
+    "name": "playback-native",
+    "description": "optimized video player on top of tint2 / webchimera.js",
+    "version": "0.0.1",
+    "license" : "MIT",
+    "author": "Ivo Georgiev <ivo@strem.io>",
+    "keywords": [
+        "video",
+        "player",
+        "tint2",
+        "webchimera",
+        "webchimera.js",
+        "vlc",
+        "libvlc"
+    ],
+    "repository": {
+        "type" : "git",
+        "url" : "https://github.com/Ivshti/playback-native"
+    },
+    "scripts": {
+        "start": "bin/tint index.js"
+    },
+    "dependencies": {
+        "webchimera.js": "*"
+    }
+}
