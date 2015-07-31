@@ -9,23 +9,70 @@ function initialize ()
 {
   glContext = opengl('openGLContext');
   glContext('makeCurrentContext');
-  $.glMatrixMode($.GL_PROJECTION);
-  $.glViewport(0, 0, win.width, win.height);
-  $.glMatrixMode($.GL_PROJECTION);
-  $.glLoadIdentity();
-  $.gluPerspective(45, win.width / win.height, 1.0, 500.0);
-  $.glMatrixMode($.GL_MODELVIEW);
-  $.glShadeModel($.GL_SMOOTH);
-  $.glClearDepth(1.0); 
-  $.glEnable($.GL_DEPTH_TEST);
-  $.glDepthFunc($.GL_LEQUAL);
-  $.glHint($.GL_PERSPECTIVE_CORRECTION_HINT, $.GL_NICEST);
-  glContext('flushBuffer');              
+
+  var vertexShaderSource = [
+      "attribute highp vec4 aVertexPosition;",
+      "attribute vec2 aTextureCoord;",
+      "varying highp vec2 vTextureCoord;",
+      "void main(void) {",
+      " gl_Position = aVertexPosition;",
+      " vTextureCoord = aTextureCoord;", "}"].join("\n");
+
+  var vertexShader = $.glCreateShader($.GL_VERTEX_SHADER);
+  $.glShaderSource(vertexShader, vertexShaderSource);
+  $.glCompileShader(vertexShader);
+
+  var fragmentShaderSource = [
+      "precision highp float;",
+      "varying lowp vec2 vTextureCoord;",
+      "uniform sampler2D YTexture;",
+      "uniform sampler2D UTexture;",
+      "uniform sampler2D VTexture;",
+      "const mat4 YUV2RGB = mat4",
+      "(",
+      " 1.1643828125, 0, 1.59602734375, -.87078515625,",
+      " 1.1643828125, -.39176171875, -.81296875, .52959375,",
+      " 1.1643828125, 2.017234375, 0, -1.081390625,",
+      " 0, 0, 0, 1",
+      ");", "void main(void) {",
+      " gl_FragColor = vec4( texture2D(YTexture, vTextureCoord).x, texture2D(UTexture, vTextureCoord).x, texture2D(VTexture, vTextureCoord).x, 1) * YUV2RGB;", "}"].join("\n");
+
+  var fragmentShader = $.glCreateShader($.GL_FRAGMENT_SHADER);
+  $.glShaderSource(fragmentShader, fragmentShaderSource);
+  $.glCompileShader(fragmentShader);
+
+  var program = $.glCreateProgram();
+  $.glAttachShader(program, vertexShader); 
+  $.glAttachShader(program, fragmentShader);
+  $.glLinkProgram(program);
+
+  $.glUseProgram(program);
+
+  if(!$.glGetProgramParameter(program, $.GL_LINK_STATUS)) {
+      console.log("Shader link failed.");
+  }
+
+  var vertexPositionAttribute = $.glGetAttribLocation(program, "aVertexPosition");
+  $.glEnableVertexAttribArray(vertexPositionAttribute);
+
+  var textureCoordAttribute = $.glGetAttribLocation(program, "aTextureCoord");
+  $.glEnableVertexAttribArray(textureCoordAttribute);
+        
+        var verticesBuffer = $.glCreateBuffer();
+        $.glBindBuffer($.GL_ARRAY_BUFFER, verticesBuffer);
+        $.glBufferData($.GL_ARRAY_BUFFER, new Float32Array([1.0, 1.0, 0.0, -1.0, 1.0, 0.0, 1.0, -1.0, 0.0, -1.0, -1.0, 0.0]), $.GL_STATIC_DRAW);
+        $.glVertexAttribPointer(vertexPositionAttribute, 3, $.GL_FLOAT, false, 0, 0);
+
+        var texCoordBuffer = $.glCreateBuffer();
+        $.glBindBuffer($.GL_ARRAY_BUFFER, texCoordBuffer);
+        $.glBufferData($.GL_ARRAY_BUFFER, new Float32Array([1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0]), $.GL_STATIC_DRAW);
+        $.glVertexAttribPointer(textureCoordAttribute, 2, $.GL_FLOAT, false, 0, 0);
+
 }
 function display() 
 {
 
-  glContext('makeCurrentContext');
+ //glContext('makeCurrentContext');
   $.glClear($.GL_COLOR_BUFFER_BIT | $.GL_DEPTH_BUFFER_BIT);
   $.glLoadIdentity();
   $.glTranslatef(0.0,0.0,-3.0);      
@@ -68,8 +115,10 @@ function Texture(gl, width, height, type) {
 
 var WebChimera = require("webchimera.js");
 var player = WebChimera.createPlayer([ "-vvv" ]);
-player.onFrameSetup = function(width, height, pixelFormat) { console.log("frame setup",width,height) };
-player.onFrameReady = function(frame) { typeof("display")=="function" && display() };
+player.onFrameSetup = function(width, height, pixelFormat) { 
+  console.log("frame setup",width,height) 
+};
+player.onFrameReady = function(frame) { typeof(display)=="function" && display() };
 player.play("file:///Users/ivogeorgiev/Downloads/1.mkv");
 global.player = player;
 
