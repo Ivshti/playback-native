@@ -1,6 +1,7 @@
 try { require('Common') } catch(e) { }
 if (process.bridge && process.bridge.objc) { // so we can also test this in node.js
 var $ = process.bridge.objc;
+/*
 $.import('GLKit');
 
 var glContext = null;
@@ -8,7 +9,7 @@ var glContext = null;
 function compileShader(type, source)
 {
   var shader = $.glCreateShader(type);
-  var lenbuf = new Buffer(32); lenbuf.writeInt32LE(source.length, 0) // how?
+  var lenbuf = new Buffer(32/8); lenbuf.writeInt32BE(source.length, 0) // how?
   $.glShaderSource(shader, 1, source, lenbuf);
   $.glCompileShader(shader);
   return shader;
@@ -113,6 +114,17 @@ function Texture(gl, width, height, type) {
     $.glTexParameteri($.GL_TEXTURE_2D, $.GL_TEXTURE_WRAP_S, $.GL_CLAMP_TO_EDGE);
     $.glTexParameteri($.GL_TEXTURE_2D, $.GL_TEXTURE_WRAP_T, $.GL_CLAMP_TO_EDGE);
 }
+*/
+
+
+var win = new Window();
+var view = $.NSView('alloc')('init');
+
+win.native('contentView')('addSubview', view);
+win.visible = true;
+
+
+
 }
 
 var WebChimera = require("webchimera.js");
