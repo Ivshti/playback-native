@@ -122,18 +122,21 @@ var view = $.NSView('alloc')('init');
 win.native('contentView')('addSubview', view);
 win.visible = true;
 
-console.log(/* view, */view.pointer)
+
 
 
 
 }
 
-var WebChimera = require("webchimera.js");
+
+var WebChimera = require("./webchimera.js");
 var player = WebChimera.createPlayer([ /* "-vvv" */ ]);
 player.onFrameSetup = function(width, height, pixelFormat) { 
   console.log("frame setup",width,height) 
 };
-player.onFrameReady = function(frame) { typeof(display)=="function" && display() };
+//player.onFrameReady = function(frame) { typeof(display)=="function" && display() };
+player.setVout(view.pointer);
 player.play("file:///Users/ivogeorgiev/Downloads/1.mkv");
 global.player = player;
+
 
