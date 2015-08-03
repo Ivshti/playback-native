@@ -116,19 +116,20 @@ function Texture(gl, width, height, type) {
 }
 */
 
-
 var win = new Window();
 var view = $.NSView('alloc')('init');
 // figure out how to get the pointer to view
 win.native('contentView')('addSubview', view);
 win.visible = true;
 
+console.log(/* view, */view.pointer)
+
 
 
 }
 
 var WebChimera = require("webchimera.js");
-var player = WebChimera.createPlayer([ "-vvv" ]);
+var player = WebChimera.createPlayer([ /* "-vvv" */ ]);
 player.onFrameSetup = function(width, height, pixelFormat) { 
   console.log("frame setup",width,height) 
 };
