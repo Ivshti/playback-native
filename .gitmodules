@@ -1,0 +1,4 @@
+[submodule "webchimera.js"]
+	path = webchimera.js
+	url = https://github.com/Ivshti/WebChimera.js
+	fetchRecurseSubmodules = true

@@ -119,7 +119,7 @@ function Texture(gl, width, height, type) {
 
 var win = new Window();
 var view = $.NSView('alloc')('init');
-
+// figure out how to get the pointer to view
 win.native('contentView')('addSubview', view);
 win.visible = true;
 

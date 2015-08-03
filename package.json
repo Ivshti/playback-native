@@ -21,6 +21,6 @@
         "start": "bin/tint index.js"
     },
     "dependencies": {
-        "webchimera.js": "*"
+    
     }
 }
