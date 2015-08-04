@@ -1,11 +1,12 @@
 try { require('Common') } catch(e) { }
 if (process.bridge && process.bridge.objc) { // so we can also test this in node.js
 var $ = process.bridge.objc;
-
+var core = require("nodobjc/lib/core");
 
 var win = new Window();
+//win.backgroundColor = "rgba(0,0,0,1)";
 win.visible = true;
-win.backgroundColor = "black";
+
 
 /*
 // Doing it with a sub-view
@@ -30,7 +31,7 @@ var view = win.native('contentView');
 var WebChimera = require("./webchimera.js");
 var player = WebChimera.createPlayer([ /* "-vvv"  */ ]);
 //player.onFrameReady = function(frame) { typeof(display)=="function" && display() };
-if (view) player.setVout(view.pointer);
+if (view) player.setVout(core.unwrapValue(view, "@"));
 player.play("file:///Users/ivogeorgiev/Downloads/1.mkv");
 global.player = player;
 
