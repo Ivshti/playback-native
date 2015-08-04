@@ -1,4 +1,4 @@
-try { require('Common') } catch(e) { }
+try { require("Common") } catch(e) { }
 
 var voutType, voutPtr;
 
@@ -11,19 +11,19 @@ if (process.bridge && process.bridge.objc) { // so we can also test this in node
 
   /*
   // Doing it with a sub-view
-  var view = $.NSView('alloc')('initWithFrame', $.NSMakeRect(0, 0, 400, 400));
-  win.native('contentView')('addSubview', view);
-  win.native('contentView')('setAutoresizesSubviews', $.YES);
-  view('setAutoresizingMask', $.NSViewHeightSizable | $.NSViewWidthSizable);
+  var view = $.NSView("alloc")("initWithFrame", $.NSMakeRect(0, 0, 400, 400));
+  win.native("contentView")("addSubview", view);
+  win.native("contentView")("setAutoresizesSubviews", $.YES);
+  view("setAutoresizingMask", $.NSViewHeightSizable | $.NSViewWidthSizable);
   // TODO make nsView opaque
   */
 
-  var view = win.native('contentView');
+  var view = win.native("contentView");
 
-  var layer = $.CALayer('alloc')('init');
-  layer('setBackgroundColor', $.NSColor("blackColor")("CGColor"));
-  view('setWantsLayer', $.YES);
-  view('setLayer', layer); 
+  var layer = $.CALayer("alloc")("init");
+  layer("setBackgroundColor", $.NSColor("blackColor")("CGColor"));
+  view("setWantsLayer", $.YES);
+  view("setLayer", layer); 
 
   voutType = "nsobject";
   voutPtr = core.unwrapValue(view, "@");
