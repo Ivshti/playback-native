@@ -1,33 +1,29 @@
 try { require('Common') } catch(e) { }
-if (process.bridge && process.bridge.objc) { // so we can also test this in node.js
-var $ = process.bridge.objc;
 var core = require("nodobjc/lib/core");
 
-var win = new Window();
-//win.backgroundColor = "rgba(0,0,0,1)";
-win.visible = true;
+if (process.bridge && process.bridge.objc) { // so we can also test this in node.js
+  var $ = process.bridge.objc;
 
+  var win = new Window();
+  win.visible = true;
 
-/*
-// Doing it with a sub-view
-var view = $.NSView('alloc')('initWithFrame', $.NSMakeRect(0, 0, 400, 400));
-// var opengl = $.NSOpenGLView('alloc')('initWithFrame', $.NSMakeRect(0,0,400,400), 'pixelFormat', $.NSOpenGLView('defaultPixelFormat'));
-// figure out how to get the pointer to view
-win.native('contentView')('addSubview', view);
-win.native('contentView')('setAutoresizesSubviews', $.YES);
-view('setAutoresizingMask', $.NSViewHeightSizable | $.NSViewWidthSizable);
-// TODO make nsView opaque
-*/
+  /*
+  // Doing it with a sub-view
+  var view = $.NSView('alloc')('initWithFrame', $.NSMakeRect(0, 0, 400, 400));
+  win.native('contentView')('addSubview', view);
+  win.native('contentView')('setAutoresizesSubviews', $.YES);
+  view('setAutoresizingMask', $.NSViewHeightSizable | $.NSViewWidthSizable);
+  // TODO make nsView opaque
+  */
 
-// TODO: use CALayer to put the NSView on a black background
+  // TODO: use CALayer to put the NSView on a black background
 
-var view = win.native('contentView');
+  var view = win.native('contentView');
 
-var layer = $.CALayer('alloc')('init');
-layer('setBackgroundColor', $.NSColor("blackColor")("CGColor"));
-view('setWantsLayer', $.YES);
-view('setLayer', layer); 
-
+  var layer = $.CALayer('alloc')('init');
+  layer('setBackgroundColor', $.NSColor("blackColor")("CGColor"));
+  view('setWantsLayer', $.YES);
+  view('setLayer', layer); 
 }
 
 
