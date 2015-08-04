@@ -10,16 +10,28 @@ if (process.bridge && process.bridge.objc) { // so we can also test this in node
   win.visible = true;
 
   /*
-  // Doing it with a sub-view
-  var view = $.NSView("alloc")("initWithFrame", $.NSMakeRect(0, 0, 400, 400));
+  var backColor = $.NSColor("blackColor")
+
+  var playerView = $.NSView.extend("playerView");
+  playerView.addMethod("drawRect:", "v@:@", function (self, _cmd, rect) {
+    self("lockFocus");
+    backColor("set");
+    $.NSRectFill(rect);
+    self("unlockFocus");
+  });
+  playerView.addMethod("isOpaque:", "v@:@", function(self, _cmd, rect) {
+    return $.YES;
+  });
+  playerView.register();
+
+  var view = playerView("alloc")("initWithFrame", $.NSMakeRect(0, 0, 400, 400));
   win.native("contentView")("addSubview", view);
   win.native("contentView")("setAutoresizesSubviews", $.YES);
   view("setAutoresizingMask", $.NSViewHeightSizable | $.NSViewWidthSizable);
-  // TODO make nsView opaque
   */
 
   var view = win.native("contentView");
-
+  
   var layer = $.CALayer("alloc")("init");
   layer("setBackgroundColor", $.NSColor("blackColor")("CGColor"));
   view("setWantsLayer", $.YES);
