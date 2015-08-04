@@ -22,8 +22,11 @@ view('setAutoresizingMask', $.NSViewHeightSizable | $.NSViewWidthSizable);
 // TODO: use CALayer to put the NSView on a black background
 
 var view = win.native('contentView');
-//view('setOpaque', $.YES)
-//view('setBackgroundColor', $.NSColor('blackColor'));
+
+var layer = $.CALayer('alloc')('init');
+layer('setBackgroundColor', $.NSColor("blackColor")("CGColor"));
+view('setWantsLayer', $.YES);
+view('setLayer', layer); 
 
 }
 
