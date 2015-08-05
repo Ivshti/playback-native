@@ -43,6 +43,16 @@ if (process.bridge && process.bridge.objc) { // so we can also test this in node
   voutPtr = core.unwrapValue(view, "@");
 }
 
+/*
+var WebView = require("WebView");
+var win = new Window();
+var webview = new WebView();
+win.appendChild(webview);
+webview.left = webview.right = webview.top = webview.bottom = 0;
+webview.location = "http://localhost:8100";
+win.visible = true;
+*/
+
 
 var WebChimera = require("./webchimera.js");
 // { vlcargs: [  ], voutType: voutType, voutPtr: voutPtr }
