@@ -9,33 +9,35 @@ if (process.bridge && process.bridge.objc) { // so we can also test this in node
   var win = new Window();
   win.visible = true;
 
-  /*
   var backColor = $.NSColor("blackColor")
 
   var playerView = $.NSView.extend("playerView");
-  playerView.addMethod("drawRect:", "v@:@", function (self, _cmd, rect) {
-    self("lockFocus");
+  playerView.addMethod("drawRect:", [$.void, [playerView,$.selector,$.NSRect]], function (self, _cmd, rect) {
     backColor("set");
     $.NSRectFill(rect);
-    self("unlockFocus");
   });
-  playerView.addMethod("isOpaque:", "v@:@", function(self, _cmd, rect) {
+  
+  playerView.addMethod("isOpaque:", [$.void, [playerView,$.selector,$.NSRect]], function(self, _cmd, rect) {
     return $.YES;
   });
+  
   playerView.register();
 
-  var view = playerView("alloc")("initWithFrame", $.NSMakeRect(0, 0, 400, 400));
+  var size = win.native("contentView")("frame").size;
+  var view = playerView("alloc")("initWithFrame", $.NSMakeRect(0,0,size.width,size.height));
   win.native("contentView")("addSubview", view);
   win.native("contentView")("setAutoresizesSubviews", $.YES);
   view("setAutoresizingMask", $.NSViewHeightSizable | $.NSViewWidthSizable);
-  */
-
-  var view = win.native("contentView");
   
+
+/*
+  var view = win.native("contentView");
+
   var layer = $.CALayer("alloc")("init");
   layer("setBackgroundColor", $.NSColor("blackColor")("CGColor"));
   view("setWantsLayer", $.YES);
   view("setLayer", layer); 
+*/
 
   voutType = "nsobject";
   voutPtr = core.unwrapValue(view, "@");
