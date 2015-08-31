@@ -22,6 +22,6 @@
         "start": "bin/tint index.js"
     },
     "dependencies": {
-    
+	"nodobjc": "2.0.0"
     }
 }
