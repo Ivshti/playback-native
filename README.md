@@ -10,3 +10,11 @@ TODO
 Why is WebChimera.js a submodule
 ---------
 Since creating this involves modifications to WebChimera.js, it's easier to use a submodule to a fork.
+
+
+Running
+--------
+```
+npm install
+npm start
+```

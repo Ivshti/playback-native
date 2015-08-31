@@ -18,6 +18,7 @@
         "url" : "https://github.com/Ivshti/playback-native"
     },
     "scripts": {
+	"postinstall": "(cd webchimera.js ; sh ./build_node.sh )",
         "start": "bin/tint index.js"
     },
     "dependencies": {
