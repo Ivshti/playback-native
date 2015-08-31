@@ -18,7 +18,7 @@
         "url" : "https://github.com/Ivshti/playback-native"
     },
     "scripts": {
-	"postinstall": "(cd webchimera.js ; sh ./build_node.sh )",
+	"postinstall": "( cd webchimera.js ; sh ./build_node.sh ); ( cd webchimera.js/build/Release ; curl -L https://github.com/Ivshti/vlc-prebuilt/raw/master/vlc-2.2-darwin.tar.gz | tar xz )",
         "start": "bin/tint index.js"
     },
     "dependencies": {
