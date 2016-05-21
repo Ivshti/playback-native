@@ -9,8 +9,8 @@ if (process.bridge && process.bridge.objc) { // so we can also test this in node
   var $ = process.bridge.objc;
 
   var win = new Window();
+  win.title = "playback-native";
   win.visible = true;
-
   
   var backColor = $.NSColor("blackColor")
 
@@ -70,15 +70,13 @@ if (process.bridge && process.bridge.objc) { // so we can also test this in node
 
 }
 
-/*
 var WebView = require("WebView");
-var win = new Window();
 var webview = new WebView();
 win.appendChild(webview);
+webview.transparent = true;
 webview.left = webview.right = webview.top = webview.bottom = 0;
-webview.location = "http://localhost:8100";
+webview.location = "http://localhost:11470";
 win.visible = true;
-*/
 
 
 var WebChimera = require("./webchimera.js");
@@ -86,7 +84,8 @@ var WebChimera = require("./webchimera.js");
 var player = WebChimera.createPlayer([ /*"-vvv"*/  ]);
 //player.onFrameReady = function(frame) { typeof(display)=="function" && display() };
 if (view) player.setVout(voutPtr);
-player.play("file:///Users/ivogeorgiev/Downloads/1.mkv");
+//player.play("file:///Users/ivogeorgiev/Downloads/1.mkv");
+player.play("file:///tmp/bbbhd.mp4");
 global.player = player;
 
 
